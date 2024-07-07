@@ -1,0 +1,45 @@
+-- Load external script
+loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+
+-- Define the keybinds
+local teleportKeyR = Enum.KeyCode.R
+local teleportKeyT = Enum.KeyCode.T
+local teleportKeyV = Enum.KeyCode.V
+
+-- User input service
+local userInputService = game:GetService("UserInputService")
+
+-- Function to teleport the player
+local function teleportPlayer(targetPosition, shouldTeleportBack)
+    local player = game.Players.LocalPlayer
+    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        local humanoidRootPart = player.Character.HumanoidRootPart
+
+        -- Store the original position
+        local originalPosition = humanoidRootPart.CFrame
+
+        -- Teleport instantly to the target position
+        humanoidRootPart.CFrame = targetPosition
+
+        -- Wait for 2 seconds at the target position
+        wait(2)
+
+        -- Teleport back to the original position if specified
+        if shouldTeleportBack then
+            humanoidRootPart.CFrame = originalPosition
+        end
+    end
+end
+
+-- Connect the function to the keybinds
+userInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed then
+        if input.KeyCode == teleportKeyR then
+            teleportPlayer(CFrame.new(0, 0, 0), true)
+        elseif input.KeyCode == teleportKeyT then
+            teleportPlayer(CFrame.new(1295, 20, 22888), false)
+        elseif input.KeyCode == teleportKeyV then
+            teleportPlayer(CFrame.new(-68, 29, 20344), false)
+        end
+    end
+end)
